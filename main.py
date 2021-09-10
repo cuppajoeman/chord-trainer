@@ -6,7 +6,8 @@ from verification import verify
 import argparse
 
 parser = argparse.ArgumentParser(description='Train chords mentally or on guitar')
-parser.add_argument("-g", "--guitar", help="guitar mode, gives user questions, new questions are given when return is pressed", action="store_true")
+parser.add_argument("-g", "--guitar", help="guitar mode: gives user questions, new questions are given when return is pressed", action="store_true")
+parser.add_argument("-s", "--suppress", help="in guitar mode this suppresses chord generation", action="store_true")
 args = parser.parse_args()
 
 guitar_mode = args.guitar
@@ -39,7 +40,7 @@ def guitar_mode_iteration():
     """
     gq = guitar.create_question()
 
-    guitar.display_question(gq)
+    guitar.display_question(gq, args.suppress)
 
     input("type any key to continue")
 
