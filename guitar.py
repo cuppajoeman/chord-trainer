@@ -24,13 +24,21 @@ def create_question():
     return GuitarQuestion(chord_root, chord_root_name, key_root, key_root_name, intervals, intervals_name, fret_pos, start_side)
 
 
-def display_question(guitar_question: GuitarQuestion):
-    print(
-        f"""
+def display_question(guitar_question: GuitarQuestion, supress_chord: bool):
+
+    if supress_chord:
+        display_str = ""
+    else:
+        display_str = f"""
         Key Root: {question.randomize_standard_note(guitar_question.key_root_name)} 
         Chord: {question.randomize_standard_note(guitar_question.chord_root_name) + guitar_question.intervals_quality_name}
-        Fret Position: {guitar_question.fret_pos}
-        Starting Side: {guitar_question.start_side}
-        """)
+        """
+
+    display_str += f"""
+    Fret Position: {guitar_question.fret_pos}
+    Starting Side: {guitar_question.start_side}
+    """
+
+    print(display_str)
 
 
