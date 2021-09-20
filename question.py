@@ -39,13 +39,19 @@ def generate_intervals_and_name() -> Tuple[Tuple[int], str]:
     return intervals, intervals_name
 
 
-def create_question():
+def create_question(key_root = -1):
     """
-    Creates and returns a question
+    Creates and returns a question, optionally you can specify a key root
+
     """
 
+    if key_root == -1:
+        key_root, key_root_name = generate_note_and_name()
+    else:
+        key_root_name = constants.NOTE_NUMBER_TO_STANDARD_NAME[key_root]
+    
+
     chord_root, chord_root_name = generate_note_and_name()
-    key_root, key_root_name = generate_note_and_name()
     intervals, intervals_name = generate_intervals_and_name()
 
     return Question(chord_root, chord_root_name, key_root, key_root_name, intervals, intervals_name)
@@ -70,5 +76,5 @@ def randomize_standard_note(standard_note: str):
 
 
 def display_question(question: Question):
-    print(f"Key Root: {randomize_standard_note(question.key_root_name)}, Chord: {randomize_standard_note(question.chord_root_name) + question.intervals_quality_name}")
+    print(f"Key Root: {randomize_standard_note(question.key_root_name)}, Chord: {randomize_standard_note(question.chord_root_name) + ' ' + question.intervals_quality_name}")
 
