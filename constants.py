@@ -6,20 +6,31 @@ BASE_QUALITIES = {
 }
 
 # the major and minor scales have the same qualities
-MAJOR_MINOR_DIATONIC_QUALITIES = {
+MAIN_JAZZ_QUALITY_TO_INTEGERS = {
     "maj7": (0, 4, 7, 11),
     "min7": (0, 3, 7, 10),
-    "dom7": (0, 4, 7, 10),
-    "half-dim7": (0, 3, 6, 10),
-}
-
-
-OTHER_QUALITIES = {
-    "dim": (0, 3, 6, 9),
-    "minmaj7": (0, 3, 7, 11),
-    "aug7": (0, 4, 8, 10),
     "maj6": (0, 4, 7, 9),
     "min6": (0, 3, 7, 9),
+    "dom7": (0, 4, 7, 10),
+    "half-dim7": (0, 3, 6, 10),
+    "dim": (0, 3, 6, 9),
+    "minmaj7": (0, 3, 7, 11),
+}
+
+MAIN_JAZZ_INTEGERS_TO_QUALITY = {v : k for k, v in MAIN_JAZZ_QUALITY_TO_INTEGERS.items()}
+
+MAIN_JAZZ_ALTERATIONS = {
+    "b9": (1,),
+    "9": (2,),
+    "#9": (3,),
+    "#5": (8,),
+    "#11": (6,),
+    "4": (5,),
+    "13" : (9),
+}
+
+OTHER_QUALITIES = {
+    "aug7": (0, 4, 8, 10),
 }
 
 

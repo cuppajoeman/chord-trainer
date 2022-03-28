@@ -20,7 +20,6 @@ def get_answer_until_correct_or_out_of_time(q: Question, time_to_solve: float) -
 
     while not question_correct:
         if iteration != 0:
-            print(iteration)
             print("Try again")
 
         time_spent = time.time() - started_at
@@ -33,6 +32,7 @@ def get_answer_until_correct_or_out_of_time(q: Question, time_to_solve: float) -
 
         if not ran_out_of_time:
             question_correct = verify(q, answer)
+            print(f"question_correct : {question_correct}")
             iteration += 1
         else:
             print("You ran out of time!")

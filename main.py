@@ -2,6 +2,8 @@ import answer
 import question
 import guitar
 import random
+
+import question_sets
 from verification import verify
 import user_input
 
@@ -13,14 +15,27 @@ parser.add_argument("-s", "--suppress", help="in guitar mode this suppresses cho
 parser.add_argument(
     "-c",
     "--continuous",
-    help="a variant where new question is shown after n seconds and doesn't check for an answer",
+    help="a variant where new question is shown after n seconds",
     type=int,
 )
+
+parser.add_argument(
+    "-j",
+    "--jazz-set",
+    help="continuous mode over a jazz question set",
+    type=int,
+)
+
 args = parser.parse_args()
 
 guitar_mode = args.guitar
 
 running = True
+
+def question_set_iteration(q: question.Question, time_to_answer: int):
+    question.display_question_no_key(q)
+
+    user_input.get_answer_until_correct_or_out_of_time(q, time_to_answer)
 
 
 def continuous_mode_iteration(key_root: int, time_to_answer: int):
@@ -84,10 +99,27 @@ elif args.continuous:
 
     if not yes_or_no(f"Your key is {question.number_to_note(rand_key)}, are you ready to go?"):
         quit()
+elif args.jazz_set:
+    rand_key = random.randint(0, 11)
+    time_to_solve = args.jazz_set
+    iteration_args.append(time_to_solve)
+
+    if not yes_or_no(f"Your key is {question.number_to_note(rand_key)}, are you ready to go?"):
+        quit()
 
 else:
     iteration = normal_mode_iteration
 
+if args.jazz_set:
+    idx = 0
+    question_set = question_sets.create_jazz_question_set(rand_key)
+    while idx < len(question_set) and running:
+        question_set_iteration(question_set[idx], time_to_solve)
+        idx += 1
 
-while running:
-    iteration(*iteration_args)
+    if idx == len(question_set):
+        print("training complete!")
+
+else:
+    while running:
+        iteration(*iteration_args)

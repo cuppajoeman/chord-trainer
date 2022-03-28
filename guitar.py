@@ -16,7 +16,7 @@ def create_question():
 
     chord_root, chord_root_name = question.generate_note_and_name()
     key_root, key_root_name = question.generate_note_and_name()
-    intervals, intervals_name = question.generate_intervals_and_name()
+    intervals, intervals_name = question.generate_random_intervals()
 
     fret_pos = random.randint(0, 24)
     start_side = ["thin", "thick"][random.choice([0, 1])]

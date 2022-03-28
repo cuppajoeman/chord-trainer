@@ -1,63 +1,54 @@
 import random
-from dataclasses import dataclass
-from typing import List, Tuple
+from typing import  Tuple
 
 import constants
 
 
-@dataclass
 class Question:
     """
     A question is a minimal amount of information to ask the user for input
     """
-    chord_root: int
-    chord_root_name: str
+    def __init__(self, chord_root: int, key_root: int, intervals: Tuple[int]):
+        self.chord_root = chord_root
+        self.chord_root_name = constants.NOTE_NUMBER_TO_STANDARD_NAME[chord_root]
 
-    key_root: int
-    key_root_name: str
+        self.key_root = key_root
+        self.key_root_name = constants.NOTE_NUMBER_TO_STANDARD_NAME[key_root]
 
-    intervals: Tuple[int]
-    intervals_quality_name: str
+        self.intervals = intervals
+        self.intervals_quality_name = constants.MAIN_JAZZ_INTEGERS_TO_QUALITY[intervals]
 
+    def __repr__(self):
+        return str(self.__dict__)
 
-def generate_note_and_name() -> Tuple[int, str]:
-    """
-    Generate a note represented by a number and it's standard name
-    """
-    note = random.randint(0, 11)
-    return note, constants.NOTE_NUMBER_TO_STANDARD_NAME[note]
-
-
-def generate_intervals_and_name() -> Tuple[Tuple[int], str]:
+def generate_random_intervals() -> Tuple[int]:
     """
     generates a set of intervals and it's name (aka chord)
     """
 
-    intervals_name = random.choice(list(constants.MAJOR_MINOR_DIATONIC_QUALITIES.keys()))
-    intervals = constants.MAJOR_MINOR_DIATONIC_QUALITIES[intervals_name]
+    intervals_name = random.choice(list(constants.MAIN_JAZZ_QUALITY_TO_INTEGERS.keys()))
+    intervals = constants.MAIN_JAZZ_QUALITY_TO_INTEGERS[intervals_name]
 
-    return intervals, intervals_name
+    return intervals
 
 
-def create_question(key_root: int = -1):
+def create_question(key_root: int = -1) -> Question:
     """
-    Creates and returns a question, optionally you can specify a key root
+    Creates and returns a question, optionally you can specify a key root, otherwise
+    a random key root is used
 
     """
 
     if key_root == -1:
-        key_root, key_root_name = generate_note_and_name()
-    else:
-        key_root_name = constants.NOTE_NUMBER_TO_STANDARD_NAME[key_root]
-    
+        key_root = random.randint(0, 11)
 
-    chord_root, chord_root_name = generate_note_and_name()
-    intervals, intervals_name = generate_intervals_and_name()
+    chord_root = random.randint(0, 11)
+    intervals = generate_random_intervals()
 
-    return Question(chord_root, chord_root_name, key_root, key_root_name, intervals, intervals_name)
+    return Question(chord_root,  key_root,  intervals)
 
 
-def randomize_sharp_or_flat(standard_note: str):
+def randomize_sharp_or_flat(standard_note: str) -> str:
     """
     Given a string which is a note in standard notation
 
