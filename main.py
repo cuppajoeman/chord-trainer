@@ -1,9 +1,9 @@
 import answer
 import question
 import guitar
-import time
 import random
 from verification import verify
+import user_input
 
 import argparse
 
@@ -23,13 +23,12 @@ guitar_mode = args.guitar
 running = True
 
 
-def continuous_mode_iteration(key_root):
+def continuous_mode_iteration(key_root: int, time_to_answer: int):
     q = question.create_question(key_root)
-    question.display_question(q)
 
-    wait_time = args.continuous
+    question.display_question_no_key(q)
 
-    time.sleep(wait_time)
+    user_input.get_answer_until_correct_or_out_of_time(q, time_to_answer)
 
 
 def normal_mode_iteration():
@@ -41,11 +40,11 @@ def normal_mode_iteration():
 
     question.display_question(q)
 
-    a = answer.get_answer()
+    a = user_input.get_answer()
 
     while not verify(q, a):
         print("try again")
-        a = answer.get_answer()
+        a = user_input.get_answer()
 
     print("correct")
 
@@ -61,6 +60,17 @@ def guitar_mode_iteration():
 
     input("type any key to continue")
 
+
+def yes_or_no(question: str) -> bool:
+    reply = str(input(question + ' (y/n): ')).lower().strip()
+    if reply[0] == 'y':
+        return True
+    elif reply[0] == 'n':
+        return False
+    else:
+        return yes_or_no("Please Enter (y/n) ")
+
+
 iteration_args = []
 
 if guitar_mode:
@@ -68,7 +78,13 @@ if guitar_mode:
 elif args.continuous:
     rand_key = random.randint(0, 11)
     iteration_args.append(rand_key)
+    time_to_solve = args.continuous
+    iteration_args.append(time_to_solve)
     iteration = continuous_mode_iteration
+
+    if not yes_or_no(f"Your key is {question.number_to_note(rand_key)}, are you ready to go?"):
+        quit()
+
 else:
     iteration = normal_mode_iteration
 

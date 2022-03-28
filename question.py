@@ -39,7 +39,7 @@ def generate_intervals_and_name() -> Tuple[Tuple[int], str]:
     return intervals, intervals_name
 
 
-def create_question(key_root = -1):
+def create_question(key_root: int = -1):
     """
     Creates and returns a question, optionally you can specify a key root
 
@@ -57,7 +57,7 @@ def create_question(key_root = -1):
     return Question(chord_root, chord_root_name, key_root, key_root_name, intervals, intervals_name)
 
 
-def randomize_standard_note(standard_note: str):
+def randomize_sharp_or_flat(standard_note: str):
     """
     Given a string which is a note in standard notation
 
@@ -75,6 +75,19 @@ def randomize_standard_note(standard_note: str):
         return standard_note
 
 
-def display_question(question: Question):
-    print(f"Key Root: {randomize_standard_note(question.key_root_name)}, Chord: {randomize_standard_note(question.chord_root_name) + ' ' + question.intervals_quality_name}")
+def number_to_note(note_number: int) -> str:
+    """
+    Given a number which represents a note, convert it to standard notation
+    while randomizing if it uses a sharp or flat.
+    :param note_number:
+    :return:
+    """
+    return randomize_sharp_or_flat(constants.NOTE_NUMBER_TO_STANDARD_NAME[note_number])
 
+
+def display_question(question: Question):
+    print(f"Key Root: {randomize_sharp_or_flat(question.key_root_name)}, Chord: {randomize_sharp_or_flat(question.chord_root_name) + ' ' + question.intervals_quality_name}")
+
+
+def display_question_no_key(question: Question):
+    print(f"Chord: {randomize_sharp_or_flat(question.chord_root_name) + ' ' + question.intervals_quality_name}")

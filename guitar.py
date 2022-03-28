@@ -19,7 +19,7 @@ def create_question():
     intervals, intervals_name = question.generate_intervals_and_name()
 
     fret_pos = random.randint(0, 24)
-    start_side = ["thin", "thick"][random.choice([0,1])]
+    start_side = ["thin", "thick"][random.choice([0, 1])]
 
     return GuitarQuestion(chord_root, chord_root_name, key_root, key_root_name, intervals, intervals_name, fret_pos, start_side)
 
@@ -30,8 +30,8 @@ def display_question(guitar_question: GuitarQuestion, supress_chord: bool):
         display_str = ""
     else:
         display_str = f"""
-        Key Root: {question.randomize_standard_note(guitar_question.key_root_name)} 
-        Chord: {question.randomize_standard_note(guitar_question.chord_root_name) + guitar_question.intervals_quality_name}
+        Key Root: {question.randomize_sharp_or_flat(guitar_question.key_root_name)} 
+        Chord: {question.randomize_sharp_or_flat(guitar_question.chord_root_name) + guitar_question.intervals_quality_name}
         """
 
     display_str += f"""
