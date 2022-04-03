@@ -1,42 +1,43 @@
 from dataclasses import dataclass
 import random
+from typing import Tuple
 
 import question
 
-@dataclass
+
 class GuitarQuestion(question.Question):
-    fret_pos: int
-    start_side: str
+    def __init__(self, chord_root: int, key_root: int, intervals: Tuple[int]):
+        super().__init__(chord_root, key_root, intervals)
+        self.anchor_string = random.randint(0, 5)
+        self.anchor_interval = random.choice(self.intervals)
 
 
-def create_question():
+def question_to_guitar_question(q : question.Question) -> GuitarQuestion:
+    return GuitarQuestion(q.chord_root, q.key_root, q.intervals)
+
+
+def create_question(key_root: int = -1) -> GuitarQuestion:
     """
-    Creates and returns a question
+    Creates and returns a question, optionally you can specify a key root, otherwise
+    a random key root is used
+
     """
 
-    chord_root, chord_root_name = question.generate_note_and_name()
-    key_root, key_root_name = question.generate_note_and_name()
-    intervals, intervals_name = question.generate_random_intervals()
+    if key_root == -1:
+        key_root = random.randint(0, 11)
 
-    fret_pos = random.randint(0, 24)
-    start_side = ["thin", "thick"][random.choice([0, 1])]
+    chord_root = random.randint(0, 11)
+    intervals = question.generate_random_intervals()
 
-    return GuitarQuestion(chord_root, chord_root_name, key_root, key_root_name, intervals, intervals_name, fret_pos, start_side)
+    return GuitarQuestion(chord_root,  key_root,  intervals)
 
 
-def display_question(guitar_question: GuitarQuestion, supress_chord: bool):
+def display_question(guitar_question: GuitarQuestion):
 
-    if supress_chord:
-        display_str = ""
-    else:
-        display_str = f"""
-        Key Root: {question.randomize_sharp_or_flat(guitar_question.key_root_name)} 
-        Chord: {question.randomize_sharp_or_flat(guitar_question.chord_root_name) + guitar_question.intervals_quality_name}
-        """
-
-    display_str += f"""
-    Fret Position: {guitar_question.fret_pos}
-    Starting Side: {guitar_question.start_side}
+    display_str = f"""
+    Chord: {question.randomize_sharp_or_flat(guitar_question.chord_root_name) + ' ' + guitar_question.intervals_quality_name}
+    Anchor String: {guitar_question.anchor_string}
+    Anchor Interval: {guitar_question.anchor_interval}
     """
 
     print(display_str)

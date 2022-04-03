@@ -32,6 +32,7 @@ guitar_mode = args.guitar
 
 running = True
 
+
 def question_set_iteration(q: question.Question, time_to_answer: int):
     question.display_question_no_key(q)
 
@@ -64,14 +65,13 @@ def normal_mode_iteration():
     print("correct")
 
 
-def guitar_mode_iteration():
+def guitar_mode_iteration(gq: guitar.GuitarQuestion):
     """
     Asks the user a question and waits until they respond with any key
     :return:
     """
-    gq = guitar.create_question()
 
-    guitar.display_question(gq, args.suppress)
+    guitar.display_question(gq)
 
     input("type any key to continue")
 
@@ -89,7 +89,11 @@ def yes_or_no(question: str) -> bool:
 iteration_args = []
 
 if guitar_mode:
+    rand_key = random.randint(0, 11)
+    iteration_args.append(rand_key)
     iteration = guitar_mode_iteration
+    if not yes_or_no(f"Your key is {question.number_to_note(rand_key)}, are you ready to go?"):
+        quit()
 elif args.continuous:
     rand_key = random.randint(0, 11)
     iteration_args.append(rand_key)
@@ -115,6 +119,18 @@ if args.jazz_set:
     question_set = question_sets.create_jazz_question_set(rand_key)
     while idx < len(question_set) and running:
         question_set_iteration(question_set[idx], time_to_solve)
+        idx += 1
+
+    if idx == len(question_set):
+        print("training complete!")
+
+if guitar_mode:
+
+    idx = 0
+    question_set = question_sets.create_jazz_question_set(rand_key)
+    while idx < len(question_set) and running:
+        gq = guitar.question_to_guitar_question(question_set[idx])
+        guitar_mode_iteration(gq)
         idx += 1
 
     if idx == len(question_set):
