@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+import helpers
 import random
 from typing import Tuple
 
@@ -37,7 +37,7 @@ def display_question(guitar_question: GuitarQuestion):
     display_str = f"""
     Chord: {question.randomize_sharp_or_flat(guitar_question.chord_root_name) + ' ' + guitar_question.intervals_quality_name}
     Anchor String: {guitar_question.anchor_string}
-    Anchor Interval: {guitar_question.anchor_interval}
+    Anchor Interval: {helpers.pos_mod(guitar_question.anchor_interval - guitar_question.key_root, 12)}
     """
 
     print(display_str)
